@@ -6,7 +6,15 @@ import { RootState } from "@/redux/store";
 const useAuthSession = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  //  implement the logic here to check user session
+
+  useEffect(() => {
+    if (user) {
+      dispatch(setUser({ username: user.username }));
+    } else {
+      dispatch(clearAuth());
+    }
+  }, [user, dispatch]); // Include dispatch in the dependency array
+
   return user;
 };
 

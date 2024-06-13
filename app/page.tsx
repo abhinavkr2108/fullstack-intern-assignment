@@ -1,18 +1,35 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { setToken } from '@/redux/auth/auth.slice';
-import useAuthSession from '../hooks/useAuthSession';
-import { useAppDispatch } from '@/redux/store';
+import { useState } from "react";
+import { setToken } from "@/redux/auth/auth.slice";
+import useAuthSession from "../hooks/useAuthSession";
+import { useAppDispatch } from "@/redux/store";
+import { toast } from "sonner";
+import axios from "axios";
 
 const HomePage = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const dispatch = useAppDispatch();
   const user = useAuthSession();
 
   const handleLogin = async () => {
     // Implement the logic to authenticate the user
+    if (username === "" || password === "") {
+      toast.error("Please enter all the details");
+    }
+
+    const useDetails = {
+      username,
+      password,
+    };
+
+    try {
+      const userInfo = await axios.post("/api/login", useDetails);
+      console.log(userInfo.data);
+    } catch (error) {
+      toast.error("Invalid credentials");
+    }
   };
 
   return (
@@ -48,7 +65,9 @@ const HomePage = () => {
           </div>
         )}
         <div className="mt-6 p-4 border rounded-md text-black bg-gray-50">
-          <h3 className="text-lg font-semibold">The hook should be usable like this: </h3>
+          <h3 className="text-lg font-semibold">
+            The hook should be usable like this:{" "}
+          </h3>
           <pre className="mt-2 p-2 text-gray-500 bg-gray-100 rounded-md">
             <code>
               {`const { user } = useAuthSession();

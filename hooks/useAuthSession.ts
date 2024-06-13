@@ -12,6 +12,7 @@ const useAuthSession = () => {
     if (token) {
       const decoded = jwtDecode(token);
       console.log("decoded", decoded);
+      //@ts-ignore
       dispatch(setUser({ username: decoded?.username }));
     }
   }, [dispatch]);

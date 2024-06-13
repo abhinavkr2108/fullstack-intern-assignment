@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
-import { setToken } from "@/redux/auth/auth.slice";
+import { useEffect, useState } from "react";
+import { setToken, setUser } from "@/redux/auth/auth.slice";
 import useAuthSession from "../hooks/useAuthSession";
-import { useAppDispatch } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import axios from "axios";
+import { nanoid } from "nanoid";
+
+type User = {
+  userId: string;
+  username: string;
+  password: string;
+};
 
 const HomePage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
   const user = useAuthSession();
+  const authToken = useAppSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (authToken) {
+      console.log("authToken", authToken);
+    }
+  }, [authToken]);
 
   const handleLogin = async () => {
     // Implement the logic to authenticate the user
@@ -19,16 +34,24 @@ const HomePage = () => {
       toast.error("Please enter all the details");
     }
 
-    const useDetails = {
+    const userDetails: User = {
       username,
       password,
+      userId: nanoid(),
     };
 
     try {
-      const userInfo = await axios.post("/api/login", useDetails);
-      console.log(userInfo.data);
+      setLoading(true);
+      const userInfo = await axios.post("/api/login", userDetails);
+      const token = userInfo.data.token;
+      dispatch(setToken(token));
+      localStorage.setItem("token", token);
+      setLoading(false);
+      toast.success("Login successful");
     } catch (error) {
+      console.error(error);
       toast.error("Invalid credentials");
+      setLoading(false);
     }
   };
 
@@ -59,8 +82,9 @@ const HomePage = () => {
             <button
               onClick={handleLogin}
               className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md"
+              disabled={loading}
             >
-              Login
+              {loading ? "Loading..." : "Login"}
             </button>
           </div>
         )}
@@ -76,6 +100,16 @@ if (user) {
 }`}
             </code>
           </pre>
+        </div>
+        <div>
+          {user && (
+            <button
+              onClick={() => {}}
+              className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md"
+            >
+              Continue to Dashboard
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -2,19 +2,19 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, clearAuth } from "@/redux/auth/auth.slice";
 import { RootState } from "@/redux/store";
+import { jwtDecode } from "jwt-decode";
 
 const useAuthSession = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-
   useEffect(() => {
-    if (user) {
-      dispatch(setUser({ username: user.username }));
-    } else {
-      dispatch(clearAuth());
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log("decoded", decoded);
+      dispatch(setUser({ username: decoded?.username }));
     }
-  }, [user, dispatch]); // Include dispatch in the dependency array
-
+  }, [dispatch]);
   return user;
 };
 

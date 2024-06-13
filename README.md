@@ -1,45 +1,51 @@
-# TMD: FullStack Intern Assignment
 
-## Overview
+# The Moon Devs
 
-This assignment involves setting up a simple username/password authentication system using Redux for state management and Next.js for the front-end and back-end. You will create API endpoints with bearer token authentication and implement a custom `useAuthSession` hook to manage the user's session on the client side.
+This is a take home assignment for The Moon Devs where we needed to use redux-toolkit to store user data and perform user login
 
-## Your Tasks
 
-1. **Implement the `useAuthSession` Hook**:
+## Tech Stack
 
-   - In `hooks/useAuthSession.ts`, create a custom hook that manages the user's authentication session.
-   - The hook should handle checking if a user is authenticated and fetching user data.
+**Client:** React, Next.js, Typescript, Redux Toolkit, TailwindCSS, Shadcn UI
 
-2. **Create and Complete the API Endpoints**:
+**Server:** Next.js API route, json-web-token
 
-   - create the required apis
 
-3. **Bearer Token Authentication**:
-   - Implement bearer token authentication in your API endpoints.
-   - Ensure that API requests are secured and only accessible to authenticated users.
 
-## Example Usage of useAuthSession Hook
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`SECRET_KEY`=(Any Random String)
+## Run Locally
+
+Clone the project
 
 ```bash
-const { user } = useAuthSession();
-
-if (user) {
-  console.log('User:', user.username);
-}
+  git clone https://github.com/abhinavkr2108/fullstack-intern-assignment
 ```
 
-## Estimated Time
+Go to the project directory
 
-Please spend no more than 3-4 hours on this assignment and submit whatever you can complete within that time frame.
+```bash
+  cd fullstack-intern-assignment
+```
 
-## Bonus Tasks
+Install dependencies
 
-1. Add validation checks for the login form.
-2. Show toast notifications for errors and successful login.
+```bash
+  npm install
+```
 
-## Submission
+Start the server
 
-1. Ensure all your changes are committed.
-2. Push your changes to a new repository on your personal GitHub account with public access.
-3. Provide a link to your repository, along with your email and phone number, in the provided Google Form. Do not create pull requests in the shared repository.
+```bash
+  npm run dev
+```
+
+
+## View Project
+
+View the live url of the project : 
+https://the-moon-devs.vercel.app

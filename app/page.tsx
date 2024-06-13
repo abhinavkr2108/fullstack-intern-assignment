@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { toast } from "sonner";
 import axios from "axios";
 import { nanoid } from "nanoid";
+import { useRouter } from "next/navigation";
 
 type User = {
   userId: string;
@@ -21,6 +22,7 @@ const HomePage = () => {
   const dispatch = useAppDispatch();
   const user = useAuthSession();
   const authToken = useAppSelector((state) => state.auth.token);
+  const router = useRouter();
 
   useEffect(() => {
     if (authToken) {
@@ -48,6 +50,7 @@ const HomePage = () => {
       localStorage.setItem("token", token);
       setLoading(false);
       toast.success("Login successful");
+      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.error("Invalid credentials");
@@ -104,7 +107,7 @@ if (user) {
         <div>
           {user && (
             <button
-              onClick={() => {}}
+              onClick={() => router.push("/dashboard")}
               className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-500 rounded-md"
             >
               Continue to Dashboard
